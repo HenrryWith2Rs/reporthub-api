@@ -10,7 +10,6 @@ import {
 } from './post.service';
 
 export class postService {
-  // CREATE //
   // Create a post
   async createPost(data: postsProps) {
     try {
@@ -22,7 +21,6 @@ export class postService {
     }
   }
 
-  // READ //
   // Get all posts with optional dynamic query
   async getAllPosts(queryParams?: Partial<postsProps>) {
     try {
@@ -45,25 +43,6 @@ export class postService {
     }
   }
 
-  // Get all posts by autocomplete
-  async autocompletePosts(query: string) {
-    try {
-      const matchingPosts = await PostModel.find({
-        $or: [
-          { title: { $regex: new RegExp(query, 'i') } },
-          { description: { $regex: new RegExp(query, 'i') } },
-          { author: { $regex: new RegExp(query, 'i') } },
-          { isbn: { $regex: new RegExp(query, 'i') } },
-        ],
-      }).limit(10);
-      return !matchingPosts ? 'No results' : matchingPosts;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
-
-  // UPDATE //
   // Update a post by ID
   async updatePostById(id: string, values: postsProps) {
     try {
@@ -78,7 +57,6 @@ export class postService {
     }
   }
 
-  // DELETE //
   // Delete a post by ID
   async deletePostById(id: string) {
     try {

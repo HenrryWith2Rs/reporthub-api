@@ -56,7 +56,7 @@ export class postService {
           { isbn: { $regex: new RegExp(query, 'i') } },
         ],
       }).limit(10);
-      return !matchingPosts ? 'No results' : matchingPosts;
+      return matchingPosts;
     } catch (error) {
       console.log(error);
       throw error;

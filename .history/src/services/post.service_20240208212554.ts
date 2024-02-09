@@ -10,12 +10,7 @@ export const createPost = async (post: postsProps) =>
 
 // Read
 export const getPostByISBN = (isbn: string) => PostModel.findOne({ isbn });
-// Read
-export const getPosts = (queryParams?: Partial<postsProps>) => {
-  // Construct the query based on the provided parameters
-  const query = queryParams ? { ...queryParams } : {};
-  return PostModel.find(query);
-};
+export const getPosts = () => PostModel.find();
 export const getPostById = (id: string) => PostModel.findById({ _id: id });
 
 // Update

@@ -5,7 +5,6 @@ import { PostController } from '../controllers/post.controller';
 export default (router: express.Router) => {
   router.post('/post/', PostController.addPost);
   router.get('/post/', PostController.getPosts);
-  router.get('/post/autocomplete', PostController.autocompletePosts);
   router.get('/post/:id', PostController.getPost);
   router.put('/post/:id', PostController.updatePost);
   router.delete('/post/:id', PostController.deletePost);

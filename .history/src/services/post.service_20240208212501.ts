@@ -9,17 +9,12 @@ export const createPost = async (post: postsProps) =>
   await PostModel.create(post);
 
 // Read
+export const getPosts = () => PostModel.find();
 export const getPostByISBN = (isbn: string) => PostModel.findOne({ isbn });
-// Read
-export const getPosts = (queryParams?: Partial<postsProps>) => {
-  // Construct the query based on the provided parameters
-  const query = queryParams ? { ...queryParams } : {};
-  return PostModel.find(query);
-};
-export const getPostById = (id: string) => PostModel.findById({ _id: id });
+export const getPostById = (id: string) => PostModel.findById(id);
 
 // Update
-export const updatePostById = (id: string, values: postsProps) =>
+export const updatePostById = (id: string, values: Record<string, any>) =>
   PostModel.findByIdAndUpdate(id, values);
 
 // Delete

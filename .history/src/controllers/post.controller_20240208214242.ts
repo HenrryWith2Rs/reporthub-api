@@ -8,38 +8,21 @@ class postController {
   // Add post controller
   async addPost(req: Request, res: Response) {
     try {
-      // get values
       const { title, author, description, published, isbn } = req.body;
-
-      // check if a value is missing
       if (!title || !author || !description || !isbn)
-        return res.status(400).json({ error: 'missing a required field' });
+        return res.status(400).json({ error: 'Missing a required field' });
 
-      // Check if a post with the provided ISBN already exists
       const existingPost = await getPostByISBN(isbn);
       if (existingPost) {
         return res
           .status(400)
           .json({ error: 'A post with this ISBN already exists' });
       }
-      // create data obj
-      const data = {
-        title: title,
-        author: author,
-        description: description,
-        published: published,
-        isbn: isbn,
-      };
 
-      //validate the request
-      const { error, value } = PostschemaValidate.validate(data);
-      if (error) {
-        return res.status(400).json({ error: `error validata data: ${error}` });
-      } else {
-        //call the create post function in the service and pass the data from the request
-        const post = await postServices.createPost(value);
-        return res.status(201).json(post);
-      }
+      const data = { title, author, description, published, isbn };
+
+      const post = await postServices.createPost(data);
+      return res.status(201).json(post);
     } catch (error) {
       console.error('Error -> ', error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -64,26 +47,6 @@ class postController {
       const id = req.params.id;
       const post = await postServices.getPostById(id);
       return res.status(200).json(post);
-    } catch (error) {
-      console.error('Error -> ', error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-
-  // Get posts with autocomplete
-  async autocompletePosts(req: Request, res: Response) {
-    try {
-      const query: string = req.query.q as string;
-
-      if (!query) {
-        return res
-          .status(400)
-          .json({ error: 'Query parameter "q" is required' });
-      }
-
-      const matchingPosts = await postServices.autocompletePosts(query);
-
-      return res.status(200).json(matchingPosts);
     } catch (error) {
       console.error('Error -> ', error);
       return res.status(500).json({ error: 'Internal server error' });

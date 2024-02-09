@@ -70,26 +70,6 @@ class postController {
     }
   }
 
-  // Get posts with autocomplete
-  async autocompletePosts(req: Request, res: Response) {
-    try {
-      const query: string = req.query.q as string;
-
-      if (!query) {
-        return res
-          .status(400)
-          .json({ error: 'Query parameter "q" is required' });
-      }
-
-      const matchingPosts = await postServices.autocompletePosts(query);
-
-      return res.status(200).json(matchingPosts);
-    } catch (error) {
-      console.error('Error -> ', error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-
   // Update post
   async updatePost(req: Request, res: Response) {
     try {
