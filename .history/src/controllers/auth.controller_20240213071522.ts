@@ -14,7 +14,7 @@ export const register = async (req: express.Request, res: express.Response) => {
     const { firstName, lastName, username, email, password } = req.body;
 
     if (!firstName || !lastName || !username || !email || !password) {
-      return res.status(400);
+      return res.sendStatus(400);
     }
 
     // Check if user already exists
@@ -47,7 +47,7 @@ export const register = async (req: express.Request, res: express.Response) => {
       .json({ user: registrationResponseDTO, token: token });
   } catch (error) {
     console.log(error);
-    return res.status(400);
+    return res.sendStatus(400);
   }
 };
 
@@ -56,7 +56,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
+      return res.sendStatus(400).json({
         error: 'E-mail and password required.',
       });
     }
@@ -64,14 +64,14 @@ export const login = async (req: express.Request, res: express.Response) => {
     const user = await UserServices.fetchUserByEmail(email);
 
     if (!user) {
-      return res.status(400).json({
+      return res.sendStatus(400).json({
         error: 'Unable to locate an account with the provided e-mail address.',
       });
     }
 
     const expectedHash = passwordSalter(user.salt, password);
     if (user.password != expectedHash) {
-      return res.status(403).json({
+      return res.sendStatus(403).json({
         error:
           'Invalid username/password. Please check your credentials and try again.',
       });
@@ -83,6 +83,6 @@ export const login = async (req: express.Request, res: express.Response) => {
     return res.status(200).send(token);
   } catch (error) {
     console.log(error);
-    return res.status(400);
+    return res.sendStatus(400);
   }
 };
