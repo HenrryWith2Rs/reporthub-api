@@ -1,7 +1,5 @@
 import { subDays, format } from 'date-fns';
 
-export function generateCustomID() {}
-
 export function getToday(): string {
   return format(new Date(), 'yyyy-MM-dd');
 }
