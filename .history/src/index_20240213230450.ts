@@ -8,17 +8,12 @@ import router from './routes';
 
 const app = express();
 const port = process.env.PORT; // Default to port 3000 if PORT is not set
-const origin = process.env.ORIGIN; // Default to localhost if ORIGIN is not set
-
-// CORS options
-const corsOptions: cors.CorsOptions = {
-  origin: origin,
-};
+const origin = process.env.ORIGIN || 'http://localhost:5173'; // Default to localhost if ORIGIN is not set
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+app.use(cors({ origin: origin }));
 app.use('/api', router());
 
 async function initializeApp() {
@@ -26,7 +21,6 @@ async function initializeApp() {
   try {
     // initialize db
     await connectToDB();
-
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

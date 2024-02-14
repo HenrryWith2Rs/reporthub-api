@@ -85,7 +85,6 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const registrationResponseDTO = buildRegistrationResponse(user);
 
-    console.log('Login successful');
     return res
       .status(200)
       .json({ user: registrationResponseDTO, token: token });

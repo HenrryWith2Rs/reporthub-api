@@ -64,8 +64,10 @@ export const login = async (req: express.Request, res: express.Response) => {
         error: 'E-mail and password required.',
       });
     }
-    const lowerCaseEmail = email.toLowerCase();
-    const user = await UserServices.fetchUserByEmail(lowerCaseEmail);
+
+    const user = await UserServices.fetchUserByEmail(email);
+    console.log('Initiate fetchUserByEmail with email:', email);
+    console.log('Initiate fetchUserByEmail with user:', user);
 
     if (user === null) {
       return res.status(404).json({
@@ -85,7 +87,6 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const registrationResponseDTO = buildRegistrationResponse(user);
 
-    console.log('Login successful');
     return res
       .status(200)
       .json({ user: registrationResponseDTO, token: token });

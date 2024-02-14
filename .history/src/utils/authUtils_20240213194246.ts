@@ -40,7 +40,7 @@ export const verifyAccessToken = (token: string) => {
 
 export const generateUserId = (): string => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const userIdLength = 7;
+  const userIdLength = 10;
   let userId = '';
 
   for (let i = 0; i < userIdLength; i++) {

@@ -59,14 +59,18 @@ export const login = async (req: express.Request, res: express.Response) => {
   try {
     const { email, password } = req.body;
 
+    console.log('Initiate login with email: ', email);
+    console.log('Initiate login with password: ', password);
     if (!email || !password) {
       return res.status(400).json({
         error: 'E-mail and password required.',
       });
     }
-    const lowerCaseEmail = email.toLowerCase();
-    const user = await UserServices.fetchUserByEmail(lowerCaseEmail);
 
+    const user = await UserServices.fetchUserByEmail(email);
+
+    console.log('Initiate fetchUserByEmail with user: ', user);
+    // console.log('Initiate login with password: ', password);
     if (user === null) {
       return res.status(404).json({
         error: 'Unable to locate an account with the provided e-mail address.',
@@ -85,7 +89,6 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const registrationResponseDTO = buildRegistrationResponse(user);
 
-    console.log('Login successful');
     return res
       .status(200)
       .json({ user: registrationResponseDTO, token: token });

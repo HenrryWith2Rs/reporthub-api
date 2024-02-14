@@ -16,7 +16,7 @@ export const random = () => crypto.randomBytes(128).toString('base64');
 
 export const generateAccessToken = (user: UserProps) => {
   const payload = {
-    sub: user.userId,
+    sub: user.email,
     name: user.firstName,
     role: user.role,
   };
@@ -39,8 +39,9 @@ export const verifyAccessToken = (token: string) => {
 };
 
 export const generateUserId = (): string => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const userIdLength = 7;
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const userIdLength = 10;
   let userId = '';
 
   for (let i = 0; i < userIdLength; i++) {

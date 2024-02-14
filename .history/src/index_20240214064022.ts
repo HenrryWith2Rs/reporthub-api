@@ -8,7 +8,7 @@ import router from './routes';
 
 const app = express();
 const port = process.env.PORT; // Default to port 3000 if PORT is not set
-const origin = process.env.ORIGIN; // Default to localhost if ORIGIN is not set
+const origin = process.env.ORIGIN || 'http://localhost:5173'; // Default to localhost if ORIGIN is not set
 
 // CORS options
 const corsOptions: cors.CorsOptions = {
@@ -26,6 +26,7 @@ async function initializeApp() {
   try {
     // initialize db
     await connectToDB();
+    console.log(corsOptions);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);

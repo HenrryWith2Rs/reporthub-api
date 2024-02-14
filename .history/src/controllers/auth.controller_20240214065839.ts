@@ -64,14 +64,16 @@ export const login = async (req: express.Request, res: express.Response) => {
         error: 'E-mail and password required.',
       });
     }
-    const lowerCaseEmail = email.toLowerCase();
-    const user = await UserServices.fetchUserByEmail(lowerCaseEmail);
 
-    if (user === null) {
-      return res.status(404).json({
-        error: 'Unable to locate an account with the provided e-mail address.',
-      });
-    }
+    const user = await UserServices.fetchUserByEmail('MaylinMojica@Gmail.com');
+    console.log('Initiate fetchUserByEmail with email:', email);
+    console.log('Initiate fetchUserByEmail with user:', user);
+
+    // if (user === null) {
+    //   return res.status(404).json({
+    //     error: 'Unable to locate an account with the provided e-mail address.',
+    //   });
+    // }
 
     const expectedHash = passwordSalter(user.salt, password);
     if (user.password != expectedHash) {
@@ -85,7 +87,6 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const registrationResponseDTO = buildRegistrationResponse(user);
 
-    console.log('Login successful');
     return res
       .status(200)
       .json({ user: registrationResponseDTO, token: token });

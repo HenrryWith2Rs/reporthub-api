@@ -10,23 +10,23 @@ const app = express();
 const port = process.env.PORT; // Default to port 3000 if PORT is not set
 const origin = process.env.ORIGIN; // Default to localhost if ORIGIN is not set
 
-// CORS options
-const corsOptions: cors.CorsOptions = {
-  origin: origin,
-};
-
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+app.use(cors({ origin: origin }));
 app.use('/api', router());
+// Custom middleware to log whitelisted origins
+const logWhitelistedOrigins: express.RequestHandler = (req, res, next) => {
+  console.log(`Whitelisted origin: ${origin}`);
+  next();
+};
+app.use(logWhitelistedOrigins); // Apply the custom middleware to log whitelisted origins
 
 async function initializeApp() {
   // Start express app
   try {
     // initialize db
     await connectToDB();
-
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
