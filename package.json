@@ -19,8 +19,6 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.1",

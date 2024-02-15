@@ -27,7 +27,7 @@ async function initializeApp() {
     // initialize db
     await connectToDB();
 
-    console.log(corsOptions);
+    console.log(cors);
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

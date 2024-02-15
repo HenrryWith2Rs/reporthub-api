@@ -18,7 +18,7 @@ const corsOptions: cors.CorsOptions = {
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+app.use(cors({ origin: 'https://main.dss8rq6do4hte.amplifyapp.com/' }));
 app.use('/api', router());
 
 async function initializeApp() {
@@ -26,8 +26,6 @@ async function initializeApp() {
   try {
     // initialize db
     await connectToDB();
-
-    console.log(corsOptions);
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
