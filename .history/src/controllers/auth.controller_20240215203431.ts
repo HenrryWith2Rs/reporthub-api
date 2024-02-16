@@ -10,8 +10,6 @@ import { UserServices } from '../services/user.serviceImpl';
 import { UserProps } from 'types/types';
 import { buildRegistrationResponse } from '../dtos/RegistrationResponseDTO';
 
-const successfulLoginMessage = 'Logged in successfully 😊👌';
-
 export const register = async (req: express.Request, res: express.Response) => {
   try {
     const { firstName, lastName, username, email, password } = req.body;
@@ -48,11 +46,9 @@ export const register = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(newUser);
     const registrationResponseDTO = buildRegistrationResponse(newUser);
 
-    return res.status(201).json({
-      user: registrationResponseDTO,
-      token: token,
-      message: successfulLoginMessage,
-    });
+    return res
+      .status(201)
+      .json({ user: registrationResponseDTO, token: token });
   } catch (error) {
     console.log(error);
     return res.status(400);
@@ -94,22 +90,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     console.log('Login successful');
     return res
       .status(200)
-      .json({
-        user: registrationResponseDTO,
-        token: token,
-        message: successfulLoginMessage,
-      });
-  } catch (error) {
-    console.log(error);
-    return res.status(400);
-  }
-};
-
-export const logout = async (req: express.Request, res: express.Response) => {
-  try {
-    return res
-      .status(200)
-      .json({ message: 'Successfully logged out 😏 🍀', token: '', user: '' });
+      .json({ user: registrationResponseDTO, token: token });
   } catch (error) {
     console.log(error);
     return res.status(400);
@@ -240,4 +221,5 @@ export const logout = async (req: express.Request, res: express.Response) => {
     return res.status(400);
   }
 };
+
 */
