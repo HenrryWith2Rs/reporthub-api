@@ -125,12 +125,12 @@ class ReportService {
           date: { $gte: dateStart, $lte: dateEnd },
           bot: bot,
           reportType: reportType,
-        }).select('date resultSet -_id');
+        }).select('date resultSet');
 
         // (2) check if result is empty array
         if (dbResults && Array.isArray(dbResults) && dbResults.length > 0) {
           // return if so
-          return dbResults;
+          return { date: dateStart, dbResults };
         } else if (dateEnd === dateStart && dateStart < today) {
           // (3) no data was found in the db, proceed to generate report manually
           console.log('No entries found for provided parameters');

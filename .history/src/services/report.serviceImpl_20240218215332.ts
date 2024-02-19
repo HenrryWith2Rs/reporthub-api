@@ -125,7 +125,7 @@ class ReportService {
           date: { $gte: dateStart, $lte: dateEnd },
           bot: bot,
           reportType: reportType,
-        }).select('date resultSet -_id');
+        }).select('date resultSet');
 
         // (2) check if result is empty array
         if (dbResults && Array.isArray(dbResults) && dbResults.length > 0) {
