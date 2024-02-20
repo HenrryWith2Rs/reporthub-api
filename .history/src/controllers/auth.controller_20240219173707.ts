@@ -93,14 +93,9 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const LoginResponseDTO = buildLoginResponse(user);
 
-    console.log('domain', domain);
-    console.log('Welcome, ', user.firstName);
-
     return res
       .cookie('access_token', token, {
-        // domain: domain,
-        // secure: true,
-        // path: '/',
+        domain: domain,
         httpOnly: true,
       })
       .status(200)

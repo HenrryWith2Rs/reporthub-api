@@ -100,8 +100,8 @@ export const login = async (req: express.Request, res: express.Response) => {
       .cookie('access_token', token, {
         // domain: domain,
         // secure: true,
-        // path: '/',
         httpOnly: true,
+        path: '/',
       })
       .status(200)
       .json({

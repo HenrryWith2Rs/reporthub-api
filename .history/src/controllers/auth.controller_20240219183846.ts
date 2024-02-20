@@ -98,9 +98,8 @@ export const login = async (req: express.Request, res: express.Response) => {
 
     return res
       .cookie('access_token', token, {
-        // domain: domain,
-        // secure: true,
-        // path: '/',
+        secure: true,
+        domain: domain,
         httpOnly: true,
       })
       .status(200)

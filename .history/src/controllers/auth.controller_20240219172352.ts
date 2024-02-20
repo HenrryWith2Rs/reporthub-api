@@ -9,7 +9,7 @@ import {
 import { UserServices } from '../services/user.serviceImpl';
 import { UserProps } from 'types/types';
 import { buildRegistrationResponse } from '../dtos/RegistrationResponseDTO';
-import { buildLoginResponse } from '../dtos/LoginDTO';
+import { buildLoginResponse } from 'dtos/LoginDTO';
 
 const successfulLoginMessage = 'Logged in successfully 😊👌';
 
@@ -93,20 +93,14 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const LoginResponseDTO = buildLoginResponse(user);
 
-    console.log('domain', domain);
-    console.log('Welcome, ', user.firstName);
-
     return res
       .cookie('access_token', token, {
-        // domain: domain,
-        // secure: true,
-        // path: '/',
+        domain: domain,
         httpOnly: true,
       })
       .status(200)
       .json({
         message: 'Logged in successfully 😊👌',
-        user: LoginResponseDTO,
       });
   } catch (error) {
     console.log(error);
@@ -117,7 +111,6 @@ export const login = async (req: express.Request, res: express.Response) => {
 export const logout = async (req: express.Request, res: express.Response) => {
   try {
     return res
-      .clearCookie('access_token')
       .status(200)
       .json({ message: 'Successfully logged out 😏 🍀', token: '', user: '' });
   } catch (error) {
