@@ -7,13 +7,12 @@ export const isAuthenticated = async (
   next: express.NextFunction
 ) => {
   try {
-    // const token = extractTokenFromCookie(req);
-    const token = extractTokenFromHeader(req);
+    const token = extractTokenFromCookie(req);
     console.log('Access Token:', token);
 
     // Verify the access token
     const result = verifyAccessToken(token);
-    // console.log('Access Token:', result);
+    console.log('Access Token:', token);
 
     // If verification fails, return 403 Forbidden
     if (!result.success) {
@@ -35,7 +34,7 @@ export const isOwner = async (
 ) => {
   try {
     const { id } = req.params; // Assuming the user ID is passed in the request parameters
-    const token = extractTokenFromHeader(req);
+    const token = extractTokenFromCookie(req);
 
     // Verify the access token
     const result = verifyAccessToken(token);
@@ -59,6 +58,12 @@ export const isOwner = async (
   }
 };
 
+const extractTokenFromCookie = (req: express.Request): string | null => {
+  const token = req.cookies['access_token'];
+
+  return token;
+};
+
 const extractTokenFromHeader = (req: express.Request): string | null => {
   const authHeader = req.headers['authorization'];
 
@@ -68,9 +73,3 @@ const extractTokenFromHeader = (req: express.Request): string | null => {
 
   return authHeader.slice(7); // "Bearer ".length === 7
 };
-
-// const extractTokenFromCookie = (req: express.Request): string | null => {
-//   const token = req.cookies['access_token'];
-//   console.log('req.cookies:', req.cookies);
-//   return token;
-// };

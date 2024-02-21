@@ -2,7 +2,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-// import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 import { connectToDB } from './db/db.config';
 import router from './routes';
@@ -23,7 +23,7 @@ const corsOptions: cors.CorsOptions = {
 app.use(cors(corsOptions)); // Enable CORS before other middleware
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-// app.use(cookieParser()); // Parse cookies
+app.use(cookieParser()); // Parse cookies
 app.use('/api', router()); // Route handling
 
 async function initializeApp() {

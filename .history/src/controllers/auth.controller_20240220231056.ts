@@ -89,25 +89,31 @@ export const login = async (req: express.Request, res: express.Response) => {
     }
 
     // Generate JWT
-    const domain = process.env.DOMAIN_DEV;
     const token = generateAccessToken(user);
+
+    // Set the cookie for 'token'
+    res.cookie('token', token, {
+      expires: new Date(Date.now() + 3600000), // Example: expires in 1 hour
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+
+    // Set the cookie for 'checkToken'
+    res.cookie('checkToken', true, {
+      expires: new Date(Date.now() + 3600000), // Example: expires in 1 hour
+      // secure: true,
+      // sameSite: 'none',
+    });
+
     const LoginResponseDTO = buildLoginResponse(user);
 
-    return (
-      res
-        // .cookie('access_token', token, {
-        //   httpOnly: true,
-        //   maxAge: 1000 * 60 * 60 * 24 * 14, // 14 Day Age,
-        //   domain: 'localhost',
-        //   sameSite: 'lax',
-        // })
-        .status(200)
-        .json({
-          message: 'Logged in successfully 😊👌',
-          user: LoginResponseDTO,
-          token: token,
-        })
-    );
+    console.log('Welcome, ', user.firstName);
+
+    return res.status(200).json({
+      message: 'Logged in successfully 😊👌',
+      user: LoginResponseDTO,
+    });
   } catch (error) {
     console.log(error);
     return res.status(400);

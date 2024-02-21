@@ -93,21 +93,16 @@ export const login = async (req: express.Request, res: express.Response) => {
     const token = generateAccessToken(user);
     const LoginResponseDTO = buildLoginResponse(user);
 
-    return (
-      res
-        // .cookie('access_token', token, {
-        //   httpOnly: true,
-        //   maxAge: 1000 * 60 * 60 * 24 * 14, // 14 Day Age,
-        //   domain: 'localhost',
-        //   sameSite: 'lax',
-        // })
-        .status(200)
-        .json({
-          message: 'Logged in successfully 😊👌',
-          user: LoginResponseDTO,
-          token: token,
-        })
-    );
+    return res
+      .cookie('access_token', token, {
+        domain: domain,
+        httpOnly: true,
+      })
+      .status(200)
+      .json({
+        message: 'Logged in successfully 😊👌',
+        user: LoginResponseDTO,
+      });
   } catch (error) {
     console.log(error);
     return res.status(400);
@@ -117,7 +112,6 @@ export const login = async (req: express.Request, res: express.Response) => {
 export const logout = async (req: express.Request, res: express.Response) => {
   try {
     return res
-      .clearCookie('access_token')
       .status(200)
       .json({ message: 'Successfully logged out 😏 🍀', token: '', user: '' });
   } catch (error) {

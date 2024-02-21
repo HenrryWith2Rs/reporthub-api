@@ -8,7 +8,7 @@ export default (router: express.Router) => {
   router.get('/report/appt/summary', reportController.requestApptSmmrReport);
   router.get(
     '/report/appt/request',
-    // isAuthenticated,
+    isAuthenticated,
     reportController.requestReportsByQuery
   );
   // router.get('/report/appt/query', reportController.requestReportsByQuery);
