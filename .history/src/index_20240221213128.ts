@@ -14,7 +14,7 @@ const originAWS = process.env.ORIGIN_AWS;
 const originVercel = process.env.ORIGIN_VERCEL;
 
 // CORS options
-const allowedOrigins = [originDev, originAWS, originVercel];
+const allowedOrigins = [originDev, originAWS];
 const corsOptions: cors.CorsOptions = {
   origin: allowedOrigins,
   credentials: true,
