@@ -12,7 +12,7 @@ export const testGet = async (req: Request, res: Response) => {
       password: password,
     };
 
-    return res.status(200).json(user);
+    return res.status(200).json(user).end();
   } catch (error) {
     console.log('Error on testGet -> ', error);
     return res.status(400).json(error);
@@ -30,7 +30,7 @@ export const testPost = async (req: Request, res: Response) => {
       password: password,
     };
 
-    return res.status(200).json(user);
+    return res.status(200).json(user).end();
   } catch (error) {
     console.log('Error on testPost -> ', error);
     return res.status(400).json(error);
