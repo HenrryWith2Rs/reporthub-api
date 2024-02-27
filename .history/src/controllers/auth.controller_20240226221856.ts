@@ -6,7 +6,7 @@ import {
   generateAccessToken,
   generateUserId,
 } from '../utils/authUtils';
-import { UserServices } from '../services/user.service';
+import { UserServices } from '../services/user.serviceImpl';
 import { UserProps } from 'types/commonTypes';
 import { buildRegistrationResponse } from '../dtos/RegistrationResponseDTO';
 import { buildLoginResponse } from '../dtos/LoginDTO';

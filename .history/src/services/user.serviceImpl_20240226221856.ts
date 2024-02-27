@@ -1,6 +1,6 @@
 // services/user.serviceImpl.ts
 import { UserModel } from '../models/users';
-import { UserProps } from '../types/types';
+import { UserProps } from '../types/commonTypes';
 import {
   createUser,
   getUsers,
