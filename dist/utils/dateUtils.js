@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatDate = exports.getLastNDays = exports.getToday = exports.generateCustomID = void 0;
+exports.formatDate = exports.getLastNDays = exports.getToday = void 0;
 const date_fns_1 = require("date-fns");
-function generateCustomID() { }
-exports.generateCustomID = generateCustomID;
 function getToday() {
     return (0, date_fns_1.format)(new Date(), 'yyyy-MM-dd');
 }
@@ -19,4 +17,4 @@ function formatDate(date) {
     return date ? (0, date_fns_1.format)(date, 'yyyy-MM-dd') : '';
 }
 exports.formatDate = formatDate;
-//# sourceMappingURL=utils.js.map
+//# sourceMappingURL=dateUtils.js.map

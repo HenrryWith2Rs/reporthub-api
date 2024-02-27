@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
-//import modules
+// controllers/post.controller.ts
 const post_service_1 = require("../services/post.service");
 const post_serviceImpl_1 = require("../services/post.serviceImpl");
 const posts_1 = require("../models/posts");
 class postController {
-    //add post controller
-    addpost = async (req, res) => {
-        //data to be saved in database
+    // Add post controller
+    async addPost(req, res) {
         try {
             // get values
             const { title, author, description, published, isbn } = req.body;
@@ -37,38 +36,80 @@ class postController {
             }
             else {
                 //call the create post function in the service and pass the data from the request
-                const post = await post_serviceImpl_1.postServices.createPost(value);
+                const post = await post_serviceImpl_1.PostServices.createPost(value);
                 return res.status(201).json(post);
             }
         }
         catch (error) {
-            console.error('error -> ', error);
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
         }
-    };
-    //get all posts
-    getPosts = async (req, res) => {
-        const posts = await post_serviceImpl_1.postServices.getPosts();
-        res.send(posts);
-    };
-    //get a single post
-    getAPost = async (req, res) => {
-        //get id from the parameter
-        const id = req.params.id;
-        const post = await post_serviceImpl_1.postServices.getPost(id);
-        res.send(post);
-    };
-    //update post
-    updatePost = async (req, res) => {
-        const id = req.params.id;
-        const post = await post_serviceImpl_1.postServices.updatePost(id, req.body);
-        res.send(post);
-    };
-    //delete a post
-    deletePost = async (req, res) => {
-        const id = req.params.id;
-        await post_serviceImpl_1.postServices.deletePost(id);
-        res.send('post deleted');
-    };
+    }
+    // Get all posts with optional dynamic query
+    async getPosts(req, res) {
+        try {
+            const queryParams = req.query; // Get query parameters from request
+            const posts = await post_serviceImpl_1.PostServices.getAllPosts(queryParams);
+            return res.status(200).json(posts);
+        }
+        catch (error) {
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    // Get a single post
+    async getPost(req, res) {
+        try {
+            const id = req.params.id;
+            const post = await post_serviceImpl_1.PostServices.getPostById(id);
+            return res.status(200).json(post);
+        }
+        catch (error) {
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    // Get posts with autocomplete
+    async autocompletePosts(req, res) {
+        try {
+            const query = req.query.q;
+            if (!query) {
+                return res
+                    .status(400)
+                    .json({ error: 'Query parameter "q" is required' });
+            }
+            const matchingPosts = await post_serviceImpl_1.PostServices.autocompletePosts(query);
+            return res.status(200).json(matchingPosts);
+        }
+        catch (error) {
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    // Update post
+    async updatePost(req, res) {
+        try {
+            const id = req.params.id;
+            const post = await post_serviceImpl_1.PostServices.updatePostById(id, req.body);
+            return res.status(200).json(post);
+        }
+        catch (error) {
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+    // Delete a post
+    async deletePost(req, res) {
+        try {
+            const id = req.params.id;
+            const post = await post_serviceImpl_1.PostServices.deletePostById(id);
+            return res.status(200).json(post);
+        }
+        catch (error) {
+            console.error('Error -> ', error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
 //export class
 exports.PostController = new postController();

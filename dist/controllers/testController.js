@@ -10,7 +10,7 @@ const testGet = async (req, res) => {
             email: email,
             password: password,
         };
-        return res.status(200).json(user).end();
+        return res.status(200).json(user);
     }
     catch (error) {
         console.log('Error on testGet -> ', error);
@@ -27,7 +27,7 @@ const testPost = async (req, res) => {
             email: email,
             password: password,
         };
-        return res.status(200).json(user).end();
+        return res.status(200).json(user);
     }
     catch (error) {
         console.log('Error on testPost -> ', error);

@@ -16,7 +16,7 @@ exports.PostschemaValidate = joi_1.default.object({
     isbn: joi_1.default.string().required(),
 });
 // Postschema
-const postSchema = new mongoose_1.Schema({
+const PostSchema = new mongoose_1.Schema({
     title: {
         type: String,
     },
@@ -39,5 +39,5 @@ const postSchema = new mongoose_1.Schema({
     },
 });
 //creating a model
-exports.PostModel = (0, mongoose_1.model)('Post', postSchema);
+exports.PostModel = (0, mongoose_1.model)('Post', PostSchema);
 //# sourceMappingURL=posts.js.map

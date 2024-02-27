@@ -7,22 +7,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+// import cookieParser from 'cookie-parser';
 dotenv_1.default.config();
-const db_config_1 = require("./config/db.config");
+const db_config_1 = require("./db/db.config");
 const routes_1 = __importDefault(require("./routes"));
 const app = (0, express_1.default)();
-const port = process.env.PORT || 3000; // Default to port 3000 if PORT is not set
-const origin = process.env.ORIGIN || 'http://localhost:5173'; // Default to localhost if ORIGIN is not set
+const port = process.env.PORT; // Default to port 3000 if PORT is not set
+const originDev = process.env.ORIGIN_DEV;
+const originAWS = process.env.ORIGIN_AWS;
+const originVercel = process.env.ORIGIN_VERCEL;
+// CORS options
+const allowedOrigins = [originDev, originAWS, originVercel];
+const corsOptions = {
+    origin: allowedOrigins,
+    credentials: true,
+};
 // middleware
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)({ origin: origin }));
-app.use('/api', (0, routes_1.default)());
+app.use((0, cors_1.default)(corsOptions)); // Enable CORS before other middleware
+app.use(express_1.default.json()); // Parse JSON bodies
+app.use(express_1.default.urlencoded({ extended: true })); // Parse URL-encoded bodies
+// app.use(cookieParser()); // Parse cookies
+app.use('/api', (0, routes_1.default)()); // Route handling
 async function initializeApp() {
     // Start express app
     try {
         // initialize db
         await (0, db_config_1.connectToDB)();
+        console.log(corsOptions);
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });

@@ -1,0 +1,1 @@
+{"version":3,"file":"RegistrationResponseDTO.js","sourceRoot":"","sources":["../../src/dtos/RegistrationResponseDTO.ts"],"names":[],"mappings":";;;AAGO,MAAM,yBAAyB,GAAG,CACvC,IAAe,EACU,EAAE;IAC3B,OAAO;QACL,SAAS,EAAE,IAAI,CAAC,SAAS;QACzB,QAAQ,EAAE,IAAI,CAAC,QAAQ;QACvB,QAAQ,EAAE,IAAI,CAAC,QAAQ;QACvB,KAAK,EAAE,IAAI,CAAC,KAAK;KAClB,CAAC;AACJ,CAAC,CAAC;AATW,QAAA,yBAAyB,6BASpC"}

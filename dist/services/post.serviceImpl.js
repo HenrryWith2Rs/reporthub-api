@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postServices = exports.postService = void 0;
-//import module
+exports.PostServices = exports.PostService = void 0;
+// services/post.serviceImpl.ts
 const posts_1 = require("../models/posts");
 const post_service_1 = require("./post.service");
-class postService {
-    //create a post
+class PostService {
+    // CREATE //
+    // Create a post
     async createPost(data) {
         try {
             const newPost = await (0, post_service_1.createPost)(data);
@@ -13,63 +14,79 @@ class postService {
         }
         catch (error) {
             console.log(error);
+            throw error; // Rethrow the error to handle it in the calling code
         }
     }
-    //get all posts
-    async getPosts() {
+    // READ //
+    // Get all posts with optional dynamic query
+    async getAllPosts(queryParams) {
         try {
-            const posts = await posts_1.PostModel.find({});
+            const posts = await (0, post_service_1.getPosts)(queryParams);
             return posts;
         }
         catch (error) {
             console.log(error);
+            throw error; // Rethrow the error to handle it in the calling code
         }
     }
-    //get a single post
-    async getPost(id) {
+    // Get a single post by ID
+    async getPostById(id) {
         try {
-            const post = await posts_1.PostModel.findById({ _id: id });
-            if (!post) {
-                return 'post not available';
-            }
-            return post;
+            const post = await (0, post_service_1.getPostById)(id);
+            return !post ? 'Post not available' : post;
         }
         catch (error) {
             console.log(error);
+            throw error; // Rethrow the error to handle it in the calling code
         }
     }
-    //update a post
-    async updatePost(id, data) {
+    // Get all posts by autocomplete
+    async autocompletePosts(query) {
         try {
-            //pass the id of the object you want to update
-            //data is for the new body you are updating the old one with
-            //new:true, so the dats being returned, is the update one
-            const postz = await posts_1.PostModel.findByIdAndUpdate({ _id: id }, data, {
-                new: true,
-            });
-            if (!postz) {
-                return 'post not available';
-            }
-            return postz;
+            const matchingPosts = await posts_1.PostModel.find({
+                $or: [
+                    { title: { $regex: new RegExp(query, 'i') } },
+                    { description: { $regex: new RegExp(query, 'i') } },
+                    { author: { $regex: new RegExp(query, 'i') } },
+                    { isbn: { $regex: new RegExp(query, 'i') } },
+                ],
+            }).limit(10);
+            return !matchingPosts ? 'No results' : matchingPosts;
         }
         catch (error) {
             console.log(error);
+            throw error;
         }
     }
-    //delete a post by using the find by id and delete
-    async deletePost(id) {
+    // UPDATE //
+    // Update a post by ID
+    async updatePostById(id, values) {
         try {
-            const post = await posts_1.PostModel.findByIdAndDelete(id);
-            if (!post) {
-                return 'post not available';
-            }
+            // Update the post
+            let post = await (0, post_service_1.updatePostById)(id, values);
+            // Fetch the updated post
+            post = await (0, post_service_1.getPostById)(id);
+            return !post ? 'Post not available' : post;
         }
         catch (error) {
             console.log(error);
+            throw error; // Rethrow the error to handle it in the calling code
+        }
+    }
+    // DELETE //
+    // Delete a post by ID
+    async deletePostById(id) {
+        try {
+            const post = await (0, post_service_1.deletePostById)(id);
+            return !post ? 'Post not available' : post;
+        }
+        catch (error) {
+            console.log(error);
+            throw error; // Rethrow the error to handle it in the calling code
         }
     }
 }
-exports.postService = postService;
+exports.PostService = PostService;
 //export the class
-exports.postServices = new postService();
+exports.PostServices = new PostService();
 //# sourceMappingURL=post.serviceImpl.js.map
