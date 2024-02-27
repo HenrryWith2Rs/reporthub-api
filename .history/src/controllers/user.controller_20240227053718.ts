@@ -2,7 +2,6 @@
 import { UserServices } from '../services/user.service';
 import { Request, Response } from 'express';
 import { UserSchemaValidate } from '../models/users';
-import { buildRegistrationResponse } from '../dtos/RegistrationResponseDTO';
 
 class UserController {
   // Add User controller
@@ -95,15 +94,11 @@ class UserController {
   async updateUser(req: Request, res: Response) {
     try {
       const userId = req.params.id;
-      if (req.body.email) {
-        req.body.email = req.body.email.toLowerCase();
-      }
       const user = await UserServices.updateUserById(userId, req.body);
-      const registrationResponseDTO = buildRegistrationResponse(user);
-      return res.status(200).json(registrationResponseDTO);
+      return res.status(200).json(user);
     } catch (error) {
       console.error('Error -> ', error);
-      return res.status(500).json({ error });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 
@@ -115,7 +110,7 @@ class UserController {
       return res.status(200).json(user);
     } catch (error) {
       console.error('Error -> ', error);
-      return res.status(500).json({ error });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   }
 }

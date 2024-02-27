@@ -1,7 +1,8 @@
 // services/user.serviceImpl.ts
+
 import { UserModel } from '../models/users';
 import { UserProps } from '../types/commonTypes';
-import { random, passwordSalter } from '../utils/authUtils';
+import { random, passwordSalter } from 'utils/authUtils';
 
 class UserService {
   // CREATE //
@@ -33,7 +34,7 @@ class UserService {
   async fetchUserById(userId: string) {
     try {
       const user = await UserModel.findOne({ userId });
-      return user || null;
+      return !user ? 'User not found' : user;
     } catch (error) {
       console.log(error);
       throw error;
@@ -63,7 +64,7 @@ class UserService {
           { password: { $regex: new RegExp(query, 'i') } },
         ],
       }).limit(10);
-      return matchingUsers || null;
+      return !matchingUsers ? 'No results' : matchingUsers;
     } catch (error) {
       console.log(error);
       throw error;
@@ -86,7 +87,7 @@ class UserService {
 
       // Fetch the updated User
       user = await UserModel.findOne({ userId });
-      return user || null;
+      return !user ? 'User not available' : user;
     } catch (error) {
       console.log(error);
       throw error;
@@ -98,7 +99,7 @@ class UserService {
   async deleteUserById(userId: string) {
     try {
       const user = await UserModel.findOneAndDelete({ userId });
-      return user || null;
+      return !user ? 'User not available' : user;
     } catch (error) {
       console.log(error);
       throw error;

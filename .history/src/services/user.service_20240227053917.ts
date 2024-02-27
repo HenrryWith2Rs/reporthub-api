@@ -1,7 +1,6 @@
 // services/user.serviceImpl.ts
 import { UserModel } from '../models/users';
 import { UserProps } from '../types/commonTypes';
-import { random, passwordSalter } from '../utils/authUtils';
 
 class UserService {
   // CREATE //
@@ -30,10 +29,10 @@ class UserService {
   }
 
   // Get a single User by ID
-  async fetchUserById(userId: string) {
+  async fetchUserById(id: string) {
     try {
-      const user = await UserModel.findOne({ userId });
-      return user || null;
+      const user = await UserModel.findById({ _id: id });
+      return !user ? 'User not found' : user;
     } catch (error) {
       console.log(error);
       throw error;
@@ -63,7 +62,7 @@ class UserService {
           { password: { $regex: new RegExp(query, 'i') } },
         ],
       }).limit(10);
-      return matchingUsers || null;
+      return !matchingUsers ? 'No results' : matchingUsers;
     } catch (error) {
       console.log(error);
       throw error;
@@ -74,19 +73,11 @@ class UserService {
   // Update a User by ID
   async updateUserById(userId: string, values: UserProps) {
     try {
-      if (values.password) {
-        // Generate a new salt for the user
-        const newSalt = random();
-        // Hash the new password using the new salt
-        values.password = passwordSalter(newSalt, values.password);
-        // Update the salt field in the values object
-        values.salt = newSalt;
-      }
-      let user = await UserModel.findOneAndUpdate({ userId }, values);
-
+      // Update the User
+      let user = await UserModel.findByIdAndUpdate(userId, values);
       // Fetch the updated User
-      user = await UserModel.findOne({ userId });
-      return user || null;
+      // user = await UserModel.findById({ userId });
+      return !user ? 'User not available' : user;
     } catch (error) {
       console.log(error);
       throw error;
@@ -98,7 +89,7 @@ class UserService {
   async deleteUserById(userId: string) {
     try {
       const user = await UserModel.findOneAndDelete({ userId });
-      return user || null;
+      return !user ? 'User not available' : user;
     } catch (error) {
       console.log(error);
       throw error;
